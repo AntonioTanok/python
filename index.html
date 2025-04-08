@@ -1,0 +1,114 @@
+<!-- <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Saludador</title>
+</head>
+<body>
+    <h1>Saludador FastAPI</h1>
+
+    <label for="nombre">Ingresa tu nombre:</label>
+    <input type="text" id="nombre" placeholder="Tu nombre">
+    <button onclick="saludarComplejo()">Saludo Complejo</button>
+    <br><br>
+
+    <button onclick="saludarSimple()">Saludo Sencillo</button>
+    <br><br>
+
+    <div id="resultado"></div>
+
+    <script>
+        function saludarComplejo() {
+            const nombre = document.getElementById("nombre").value;
+            fetch(`http://localhost:8000/Saludar?nombre=${encodeURIComponent(nombre)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("resultado").innerText = "Respuesta: " + JSON.stringify(data);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
+
+        function saludarSimple() {
+            fetch("http://localhost:8000/saludo_Normal")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("resultado").innerText = "Respuesta: " + JSON.stringify(data);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta Usuarios</title>
+</head>
+<body>
+    <h1>Saludador FastAPI</h1>
+
+    <label for="nombre">Ingresa tu nombre:</label>
+    <input type="text" id="nombre" placeholder="Tu nombre">
+    <button onclick="saludarComplejo()">Saludo Complejo</button>
+    <br><br>
+
+    <button onclick="saludarSimple()">Saludo Sencillo</button>
+    <br><br>
+
+    <h2>Consulta de usuarios</h2>
+    <input type="number" id="usuario_id" placeholder="ID de usuario">
+    <button onclick="consultarUsuario()">Consultar Usuario por ID</button>
+    <button onclick="consultarTodos()">Consultar Todos los Usuarios</button>
+    <br><br>
+
+    <!-- Aquí se mostrará la respuesta -->
+    <div id="resultado" style="white-space: pre-wrap;"></div>
+
+    <script>
+        function saludarComplejo() {
+            const nombre = document.getElementById("nombre").value;
+            fetch(`http://localhost:8000/Saludar?nombre=${encodeURIComponent(nombre)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("resultado").innerText = "Respuesta: " + JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+        function saludarSimple() {
+            fetch("http://localhost:8000/saludo_Normal")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("resultado").innerText = "Respuesta: " + JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+        function consultarUsuario() {
+            const id = document.getElementById("usuario_id").value;
+            fetch(`http://localhost:8000/usuarios/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("resultado").innerText = "Usuario: " + JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+        function consultarTodos() {
+            fetch(`http://localhost:8000/usuarios`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("resultado").innerText = "Usuarios: " + JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
+    
