@@ -3,6 +3,10 @@
 from fastapi import APIRouter
 import Servicios.usuariosServicios as usuarioServicio
 from pydantic import BaseModel, EmailStr
+from modelos.usuarioModel import LoginRequest
+from fastapi import Depends
+from utils.auth import verificar_token
+
 
 usuarioRouter = APIRouter()
 
@@ -17,6 +21,11 @@ class UsuarioActualizar(BaseModel):
     email: EmailStr
     password: str
     role: str
+
+class CredencialesUsuario(BaseModel):
+    email: EmailStr
+    password: str
+
 
 @usuarioRouter.get("/usuarios")
 def obtener_usuarios():
@@ -51,10 +60,34 @@ def eliminar_usuario_endpoint(id: int):
     return usuarioServicio.eliminar_usuario(id)
 
 
+@usuarioRouter.post("/login")
+def login_usuario(credenciales: CredencialesUsuario):
+    return usuarioServicio.iniciar_sesion(
+        credenciales.email,
+        credenciales.password
+    )
+
+
+
+@usuarioRouter.get("/perfil")
+def perfil_usuario(usuario = Depends(verificar_token)):
+    return {
+        "usuario_id": usuario["user_id"],
+        "nombre": usuario["name"],
+        "email": usuario["email"],
+        "sesion_inicio": usuario["fecha_inicio"]
+    }
 
 
 
 
+
+
+
+
+# @usuarioRouter.post("/login")
+# def login(request: LoginRequest):
+#     return usuarioServicio.login_usuario(request.email, request.password)
 
 
 
